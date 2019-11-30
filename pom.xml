@@ -18,6 +18,34 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <issueManagement>
+        <url>https://github.com/00-matt/addressutil/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/00-matt/addressutil</url>
+        <connection>scm:git:git://github.com/00-matt/addressutil.git</connection>
+        <developerConnection>scm:git:git@github.com:00-matt/addressutil.git</developerConnection>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <email>matt@offtopica.uk</email>
+            <name>Matthew Smith</name>
+            <url>https://offtopica.uk</url>
+            <id>offtopica</id>
+        </developer>
+    </developers>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
