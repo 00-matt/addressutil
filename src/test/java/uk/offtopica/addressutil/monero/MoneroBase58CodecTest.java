@@ -21,13 +21,24 @@ class MoneroBase58CodecTest {
 
     @ParameterizedTest(name = "[{index}] {1}")
     @CsvFileSource(resources = "base58-valid.csv", numLinesToSkip = 1)
-    void testDecodeValid(String expected, String input) throws Exception {
-        assertArrayEquals(hexStringToByteArray(expected), base58Codec.decode(input));
+    void testDecodeValid(String decoded, String encoded) throws Exception {
+        assertArrayEquals(hexStringToByteArray(decoded), base58Codec.decode(encoded));
     }
 
     @ParameterizedTest(name = "[{index}] {0}")
     @CsvFileSource(resources = "base58-invalid.csv", numLinesToSkip = 1)
-    void testDecodeValid(String input) {
+    void testDecodeInvalidThrows(String input) {
         assertThrows(MoneroBase58Exception.class, () -> base58Codec.decode(input));
+    }
+
+    @Test
+    void testEncodeValidEmpty() throws Exception {
+        assertEquals(base58Codec.encode(new byte[]{}), "");
+    }
+
+    @ParameterizedTest(name = "[{index}] {1}")
+    @CsvFileSource(resources = "base58-valid.csv", numLinesToSkip = 1)
+    void testEncodeValid(String decoded, String encoded) throws Exception {
+        assertEquals(encoded, base58Codec.encode(hexStringToByteArray(decoded)));
     }
 }
