@@ -1,9 +1,10 @@
 package uk.offtopica.addressutil.monero;
 
+import org.bouncycastle.jcajce.provider.digest.Keccak;
 import uk.offtopica.addressutil.AddressDecoder;
 import uk.offtopica.addressutil.InvalidAddressException;
-import uk.offtopica.addressutil.internal.Keccak;
 
+import java.security.DigestException;
 import java.util.Arrays;
 
 public class MoneroAddressDecoder implements AddressDecoder<MoneroAddress> {
@@ -54,11 +55,13 @@ public class MoneroAddressDecoder implements AddressDecoder<MoneroAddress> {
             System.arraycopy(data, 65, checksum, 0, 4);
         }
 
-        Keccak keccak256 = new Keccak(256);
+        Keccak.Digest256 keccak256 = new Keccak.Digest256();
         keccak256.update(data, 0, data.length - 4); // don't include the checksum in the checksum
-        byte[] hash = keccak256.digestArray(4);
+        byte[] digest = keccak256.digest();
+        byte[] realChecksum = new byte[4];
+        System.arraycopy(digest, 0, realChecksum, 0, 4);
 
-        if (!Arrays.equals(hash, checksum)) {
+        if (!Arrays.equals(realChecksum, checksum)) {
             throw new InvalidAddressException("Bad checksum");
         }
 
