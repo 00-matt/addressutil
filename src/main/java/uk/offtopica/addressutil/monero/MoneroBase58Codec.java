@@ -5,6 +5,7 @@ import uk.offtopica.addressutil.internal.ByteArrayUtils;
 
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /**
  * Encoder and decoder for Base58 strings.
@@ -75,8 +76,40 @@ public class MoneroBase58Codec {
         System.arraycopy(val, 0, buf, idx, resultSize);
     }
 
-    public String encode(byte[] data) {
-        // TODO: Not yet implemented.
-        throw new UnsupportedOperationException();
+    public String encode(byte[] encoded) {
+        if (encoded.length == 0) {
+            return "";
+        }
+
+        int numFullBlocks = encoded.length / FULL_BLOCK_SIZE;
+        int finalBlockSize = encoded.length % FULL_BLOCK_SIZE;
+        int resultSize = numFullBlocks * FULL_ENCODED_BLOCK_SIZE + ENCODED_BLOCK_SIZES[finalBlockSize];
+        byte[] result = new byte[resultSize];
+        Arrays.fill(result, (byte) ALPHABET[0]);
+
+        for (int i = 0; i < numFullBlocks; i++) {
+            byte[] block = new byte[FULL_BLOCK_SIZE];
+            System.arraycopy(encoded, i * FULL_BLOCK_SIZE, block, 0, FULL_BLOCK_SIZE);
+            encodeBlock(block, result, i * FULL_ENCODED_BLOCK_SIZE);
+        }
+        if (finalBlockSize > 0) {
+            byte[] block = new byte[finalBlockSize];
+            System.arraycopy(encoded, numFullBlocks * FULL_BLOCK_SIZE, block, 0, finalBlockSize);
+            encodeBlock(block, result, numFullBlocks * FULL_ENCODED_BLOCK_SIZE);
+        }
+
+        return new String(result, Charset.defaultCharset());
+    }
+
+    private void encodeBlock(byte[] data, byte[] buf, int idx) {
+        BigInteger val = new BigInteger(1, data);
+        int i = ENCODED_BLOCK_SIZES[data.length] - 1;
+
+        while (val.compareTo(BigInteger.ZERO) > 0) {
+            int remainder = val.mod(ALPHABET_SIZE).intValue();
+            val = val.divide(ALPHABET_SIZE);
+            buf[idx + i] = (byte) ALPHABET[remainder];
+            i--;
+        }
     }
 }
