@@ -2,6 +2,8 @@ package uk.offtopica.addressutil.monero;
 
 import uk.offtopica.addressutil.Address;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -54,5 +56,25 @@ public class MoneroAddress implements Address {
 
     public Optional<byte[]> getPaymentId() {
         return Optional.ofNullable(paymentId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MoneroAddress that = (MoneroAddress) o;
+        return networkByte == that.networkByte &&
+                Arrays.equals(publicSpendKey, that.publicSpendKey) &&
+                Arrays.equals(publicViewKey, that.publicViewKey) &&
+                Arrays.equals(paymentId, that.paymentId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(networkByte);
+        result = 31 * result + Arrays.hashCode(publicSpendKey);
+        result = 31 * result + Arrays.hashCode(publicViewKey);
+        result = 31 * result + Arrays.hashCode(paymentId);
+        return result;
     }
 }
