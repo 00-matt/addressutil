@@ -1,4 +1,4 @@
-package uk.offtopica.addressutil;
+package uk.offtopica.addressutil.internal;
 
 public class HexUtils {
     public static byte[] hexStringToByteArray(String hex) {
