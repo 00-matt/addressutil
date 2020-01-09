@@ -5,7 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static uk.offtopica.addressutil.HexUtils.hexStringToByteArray;
+import static uk.offtopica.addressutil.internal.HexUtils.hexStringToByteArray;
 
 class BitcoinBase58CheckCodecTest {
     BitcoinBase58CheckCodec base58CheckCodec;

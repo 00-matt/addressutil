@@ -5,6 +5,7 @@ Create, verify, and manipulate crypto-currency addresses.
 ## Supported crypto-currencies
 
 * Bitcoin
+* Ethereum
 * Monero
 
 ## Example
