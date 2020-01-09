@@ -11,10 +11,6 @@ public class EthereumAddressDecoder implements AddressDecoder<EthereumAddress> {
     private final EthereumNetworkConstants networkConstants;
 
     public EthereumAddressDecoder(EthereumNetworkConstants networkConstants) {
-        if (networkConstants.hasAdoptedEip1191()) {
-            throw new IllegalArgumentException("EIP-1191 addresses are not supported");
-        }
-
         this.networkConstants = networkConstants;
     }
 
@@ -28,8 +24,6 @@ public class EthereumAddressDecoder implements AddressDecoder<EthereumAddress> {
         if (address.startsWith("0x")) {
             address = address.substring(2);
         }
-
-        System.out.println(address);
 
         // 40 hex chars = 20 bytes
         if (address.length() != 40) {
